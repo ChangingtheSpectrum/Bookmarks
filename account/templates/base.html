@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}{% endblock %}</title>
+	<link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+	<div id="header">
+		<span class="logo">Bookmarks</span>
+		{% if request.user.is_authenticated %}
+		<ul class="menu">
+			<li {% if section == "dashboard" %}class="selected"{% endif %}><a href="{% url "dashboard" %}/>Dashboard</li>
+			<li {% if section == "images" %}class="selected"{% endif %}><a href="#">Images</li>
+			<li {% if section == "people" %}class="selected"{% endif %}><a href="#">People</li>
+		</ul>
+		{% else %}
+		<ul class="menu">
+			<li class="selected"><a href="{% url 'register' %}"/>Create Account</li>
+		{% endif %}
+
+		<span class="user">
+			{% if request.user.is_authenticated %}
+				<p>Hello, {{ request.user.username }}!</p> <a href="{% url "logout" %}">Logout</a>
+			{% else %}
+				<a href="{% url "login" %}">Login</a>
+			{% endif %}
+		</span>
+	</div>
+
+	{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+				<li class="{{ message.tags }}">
+					{{ message|safe }}
+					<a href="#" class="close">x</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+	<div id="content">
+		{% block content %}
+		{% endblock %}
+	</div>
+</body>
+</html>

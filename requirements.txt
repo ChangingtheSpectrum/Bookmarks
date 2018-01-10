@@ -1,0 +1,4 @@
+django==1.11.7
+Pillow
+python-social-auth
+pyjwkest
